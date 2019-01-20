@@ -3,6 +3,8 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 
+var context2 = document.getElementById("canvas2").getContext("2d");
+
 var width = 1280;
 var height = 720;
 
@@ -49,39 +51,18 @@ function _clearCanvas() {
 function _updateReason() {
 
   if (razon > 1.2) {
-    razon -= 0.0009;
+    razon -= 0.00004;
   } else {
     razon = 1.26;
   }
 
 }
 
-var frames = 60;
-var timerId = 0;
-
-timerId = setInterval(gameLoop, 1000/frames);
-
-var 
-
-function gameLoop() {
-
-  _updateReason();
-  _clearCanvas();
-  for (var y = height ; y > 1 ; y /= razon) {
-
+function _drawPerspective() {
+  var y = height;
+  do {
+    y /= razon;
     var posY = centerY + y;
-    //context.strokeStyle = 'white';
-    //context.lineWidth = 5;
-//
-    //context.beginPath();
-    //context.moveTo(width - width, height - 40);  
-    //context.lineTo(width/2 - 40, centerY + 2)
-    //context.stroke();
-//
-    //context.beginPath();
-    //context.moveTo(width, height - 40);
-    //context.lineTo(width - width/2 + 40, centerY + 2);
-    //context.stroke();
 
     context.lineWidth = 2;
     context.strokeStyle = green1;
@@ -94,34 +75,100 @@ function gameLoop() {
       colorChange = !colorChange;
     }
 
-    context.fillRect(0, posY, width, y/2);
-debugger;
+    
+    context.fillRect(0, posY, width, y);
+    
+    debugger;
 
-    //context.beginPath();
-    //context.moveTo(0, posY);
-    //context.lineTo(width, posY);
-    //context.stroke();
 
     context.fillStyle = 'blue';
     context.fillRect(width - width, height - height, width, centerY + 10);
+    //IF Y < 2 CALL FUNCTION SENDING IMAGE TO RENDER (CANVAS2?)
+  } while (y > 1);
 
-    //context.globalAlpha = 0.1;
+}
+
+var frames = 60;
+var timerId = 0;
+
+timerId = setInterval(gameLoop, 1000/frames);
+
+var gameLoopTimeout = null;
+
+function gameLoop() {
+
+  //clearTimeout(gameLoopTimeout);
+  //window.requestAnimationFrame(gameLoop);
+
+  _clearCanvas();
+  _updateReason();
+  //_drawPerspective();
 
 
-    //I need to save previous posY to know the height of the rectangle
 
-    //if (colorChange == false) {
+
+
+
+
+
+
+
+  //for (var y = height ; y > 1 ; y /= razon) {
+//
+    ////y /= razon
+    //var posY = centerY + y;
+    ////context.strokeStyle = 'white';
+    ////context.lineWidth = 5;
+////
+    ////context.beginPath();
+    ////context.moveTo(width - width, height - 40);  
+    ////context.lineTo(width/2 - 40, centerY + 2)
+    ////context.stroke();
+////
+    ////context.beginPath();
+    ////context.moveTo(width, height - 40);
+    ////context.lineTo(width - width/2 + 40, centerY + 2);
+    ////context.stroke();
+//
+    //context.lineWidth = 2;
+    //context.strokeStyle = green1;
+//
+    //if (colorChange == true) {
     //  context.fillStyle = green2;
-    //  context.fillRect(0, posY, width, 2);
-    //  colorChange = true;
-    //} else if (colorChange == true) {
+    //  colorChange = !colorChange;
+    //} else if (colorChange == false) {
     //  context.fillStyle = green1;
-    //  context.fillRect(0, posY, width, 2);
-    //  colorChange = false;
+    //  colorChange = !colorChange;
     //}
-    
-  }
- // window.requestAnimationFrame(gameLoop);
+//
+    //context.fillRect(0, posY, width, y);
+    //debugger;
+//
+    ////context.beginPath();
+    ////context.moveTo(0, posY);
+    ////context.lineTo(width, posY);
+    ////context.stroke();
+//
+    //context.fillStyle = 'blue';
+    //context.fillRect(width - width, height - height, width, centerY + 10);
+    ////context.globalAlpha = 0.1;
+//
+//
+    ////I need to save previous posY to know the height of the rectangle
+//
+    ////if (colorChange == false) {
+    ////  context.fillStyle = green2;
+    ////  context.fillRect(0, posY, width, 2);
+    ////  colorChange = true;
+    ////} else if (colorChange == true) {
+    ////  context.fillStyle = green1;
+    ////  context.fillRect(0, posY, width, 2);
+    ////  colorChange = false;
+    ////}
+    //
+  //}//
+//
+  gameLoopTimeout = setTimeout(gameLoop, 1000 / frames);
 
 }
 
